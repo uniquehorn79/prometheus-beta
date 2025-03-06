@@ -50,6 +50,9 @@ def send_http_post_request(
             'data': response.json() if response.text else {}
         }
 
+    except requests.HTTPError:
+        # Re-raise HTTP errors without wrapping
+        raise
     except requests.RequestException as e:
-        # Handle and re-raise request-related exceptions
+        # Handle other request-related exceptions
         raise RuntimeError(f"HTTP POST request failed: {str(e)}") from e
