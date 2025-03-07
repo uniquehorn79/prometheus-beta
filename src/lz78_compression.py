@@ -13,14 +13,14 @@ def lz78_compress(input_string: str) -> List[Tuple[int, str]]:
     
     Raises:
         TypeError: If input is not a string.
-        ValueError: If input is an empty string.
     """
     # Input validation
     if not isinstance(input_string, str):
         raise TypeError("Input must be a string")
     
+    # Handle empty string as a special case
     if not input_string:
-        raise ValueError("Input string cannot be empty")
+        return []
     
     # Initialize compression dictionary and output
     dictionary = {0: ''}  # 0 represents empty string
