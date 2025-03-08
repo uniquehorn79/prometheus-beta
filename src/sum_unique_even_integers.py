@@ -19,18 +19,22 @@ def sum_unique_even_integers(numbers):
     if not all(isinstance(num, int) for num in numbers):
         raise TypeError("All elements must be integers")
     
-    # Count occurrences of even numbers
-    even_counts = {}
+    # Find unique even numbers using complex logic
+    unique_evens = []
+    repeated_evens = set()
+    
     for num in numbers:
         if num % 2 == 0:
-            even_counts[num] = even_counts.get(num, 0) + 1
+            # If number is already in repeated, skip
+            if num in repeated_evens:
+                continue
+            
+            # If number is already in unique_evens, it becomes a repeated number
+            if num in unique_evens:
+                unique_evens.remove(num)
+                repeated_evens.add(num)
+            else:
+                # Add to unique_evens if not repeated before
+                unique_evens.append(num)
     
-    # Find the set of unique even numbers
-    unique_evens = [num for num, count in even_counts.items() if count == 1]
-    
-    # If no unique even numbers are found or all even numbers appear multiple times, return 0
-    if not unique_evens:
-        return 0
-    
-    # Return sum of unique even numbers
     return sum(unique_evens)
