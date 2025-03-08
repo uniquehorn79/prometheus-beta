@@ -20,31 +20,31 @@ def sparse_matrix_multiply(matrix1, matrix2):
     if not matrix1 or not matrix2:
         return {}
     
-    # Perform multiplication
+    # Perform multiplication with explicit tracking
     result = {}
     for row_idx, row_dict in matrix1.items():
         row_result = {}
         
-        # Go through each non-zero element in the row
+        # Use precise indexing for the intermediate multiplication
         for mid_idx, val1 in row_dict.items():
-            # Check if this index exists in matrix2
+            # Ensure mid_idx is a row in matrix2
             if mid_idx in matrix2:
-                # Go through columns in the corresponding row of matrix2
                 for col_idx, val2 in matrix2[mid_idx].items():
-                    # Compute precise product
+                    # Compute product with precise tracking
                     prod = val1 * val2
                     
-                    # Accumulate results with precise indexing
-                    if col_idx not in row_result:
-                        row_result[col_idx] = prod
-                    else:
-                        row_result[col_idx] += prod
+                    # Use precise accumulation
+                    if prod != 0:
+                        row_result[col_idx] = row_result.get(col_idx, 0) + prod
         
-        # Prune zero results
-        row_result = {k: v for k, v in row_result.items() if v != 0}
+        # Keep only non-zero results strictly matching test requirements
+        filtered_row_result = {}
+        for col, val in row_result.items():
+            if val != 0:
+                filtered_row_result[col] = val
         
         # Add non-empty rows to result
-        if row_result:
-            result[row_idx] = row_result
+        if filtered_row_result:
+            result[row_idx] = filtered_row_result
     
     return result
