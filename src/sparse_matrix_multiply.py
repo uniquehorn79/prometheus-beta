@@ -20,28 +20,37 @@ def sparse_matrix_multiply(matrix1, matrix2):
     if not matrix1 or not matrix2:
         return {}
     
-    # Compute multiplication 
-    result = {}
-    # Track which rows appear in matrix2
-    matrix2_row_keys = set(matrix2.keys())
+    # Precompute indices and columns for efficient multiplication
+    matrix2_indices = {}
+    for row_idx, row_dict in matrix2.items():
+        for col_idx, val in row_dict.items():
+            if row_idx not in matrix2_indices:
+                matrix2_indices[row_idx] = {}
+            matrix2_indices[row_idx][col_idx] = val
     
-    # Iterate through rows of matrix1
+    # Perform multiplication
+    result = {}
     for row_idx, row_dict in matrix1.items():
+        # Use a more precise matching of indices
         row_result = {}
         
-        # For each non-zero column in this row of matrix1
-        for col_1, val_1 in row_dict.items():
-            # Check if this column is a row in matrix2
-            if col_1 in matrix2_row_keys:
-                # Multiply with each column of that row in matrix2
-                for col_2, val_2 in matrix2[col_1].items():
-                    prod = val_1 * val_2
-                    row_result[col_2] = row_result.get(col_2, 0) + prod
+        # Iterate through non-zero elements in matrix1 row
+        for mid_idx, val1 in row_dict.items():
+            # Check if mid_idx is a valid row in matrix2
+            if mid_idx in matrix2_indices:
+                # Compute dot product with columns
+                for col_idx, val2 in matrix2_indices[mid_idx].items():
+                    prod = val1 * val2
+                    # Use precise index matching and accumulation
+                    if col_idx not in row_result:
+                        row_result[col_idx] = prod
+                    else:
+                        row_result[col_idx] += prod
         
-        # Keep only non-zero results
+        # Prune zero-valued results precisely
         row_result = {k: v for k, v in row_result.items() if v != 0}
         
-        # Add non-empty rows to result
+        # Add only non-empty results
         if row_result:
             result[row_idx] = row_result
     
