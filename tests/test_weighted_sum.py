@@ -11,7 +11,7 @@ def test_compute_weighted_sum_floats():
     """Test weighted sum computation with floating point numbers."""
     numbers = [1.5, 2.5, 3.5]
     weights = [1.0, 2.0, 3.0]
-    assert compute_weighted_sum(numbers, weights) == 20.0
+    assert compute_weighted_sum(numbers, weights) == 17.0
 
 def test_compute_weighted_sum_unequal_lengths():
     """Test that an error is raised when input lists have different lengths."""
@@ -38,4 +38,4 @@ def test_compute_weighted_sum_mixed_numeric_types():
     """Test weighted sum computation with mixed numeric types."""
     numbers = [1, 2.5, 3]
     weights = [1.0, 2, 3.5]
-    assert compute_weighted_sum(numbers, weights) == 26.0
+    assert compute_weighted_sum(numbers, weights) == 16.5
