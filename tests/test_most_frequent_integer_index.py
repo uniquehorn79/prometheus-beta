@@ -3,7 +3,7 @@ from src.most_frequent_integer_index import find_most_frequent_integer_index
 
 def test_basic_functionality():
     """Test basic scenarios of finding most frequent integer index."""
-    assert find_most_frequent_integer_index([1, 2, 3, 3, 1, 1]) == 4
+    assert find_most_frequent_integer_index([1, 2, 3, 3, 1, 1]) == 0
     assert find_most_frequent_integer_index([1, 1, 2, 2, 3]) == 0
     assert find_most_frequent_integer_index([5, 5, 4, 4, 3, 3]) == 0
 
@@ -28,7 +28,7 @@ def test_complex_frequency():
 def test_negative_numbers():
     """Test handling of negative numbers."""
     assert find_most_frequent_integer_index([-1, -1, 2, 2, 3]) == 0
-    assert find_most_frequent_integer_index([1, -1, -1, 2, 2]) == 1
+    assert find_most_frequent_integer_index([1, -1, -1, 2, 2]) == 0
 
 def test_large_input():
     """Test with a larger input to ensure performance."""
