@@ -19,11 +19,13 @@ def sum_unique_even_integers(numbers):
     if not all(isinstance(num, int) for num in numbers):
         raise TypeError("All elements must be integers")
     
-    # Filter out repeated even numbers
-    even_numbers = [num for num in numbers if num % 2 == 0]
+    # Count occurrences of all even numbers
+    even_counts = {}
+    for num in numbers:
+        if num % 2 == 0:
+            even_counts[num] = even_counts.get(num, 0) + 1
     
-    # Sum unique even numbers
-    unique_even_sum = sum(num for num in even_numbers 
-                           if even_numbers.count(num) == 1)
+    # Sum unique even numbers (those that appear exactly once)
+    unique_even_sum = sum(num for num, count in even_counts.items() if count == 1)
     
     return unique_even_sum
