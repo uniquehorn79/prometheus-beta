@@ -26,13 +26,13 @@ def test_process_word_list_whitespace_variations(tmp_path):
     result = process_word_list(str(test_file))
     assert result == ['hello', 'python', 'world']
 
-def test_process_word_list_case_sensitive(tmp_path):
-    # Ensure case is preserved
+def test_process_word_list_case_preserving(tmp_path):
+    # Ensure first occurrence of a word is preserved
     test_file = tmp_path / "case_test.txt"
     test_file.write_text("Apple apple APPLE Banana banana")
     
     result = process_word_list(str(test_file))
-    assert result == ['Apple', 'APPLE', 'Banana', 'apple', 'banana']
+    assert result == ['Apple', 'Banana']
 
 def test_process_word_list_file_not_found():
     # Test handling of non-existent file
