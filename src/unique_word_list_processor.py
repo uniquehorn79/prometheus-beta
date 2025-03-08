@@ -6,7 +6,7 @@ def process_word_list(input_file_path):
         input_file_path (str): Path to the input text file containing words.
 
     Returns:
-        list: A sorted list of unique words from the input file, preserving original case.
+        list: A sorted list of unique words from the input file, preserving first occurrence.
 
     Raises:
         FileNotFoundError: If the input file does not exist.
@@ -18,10 +18,16 @@ def process_word_list(input_file_path):
             # Split by whitespace, remove leading/trailing whitespace from each word
             words = [word.strip() for word in file.read().split()]
 
-        # Remove duplicates while preserving case order, then sort
-        unique_sorted_words = sorted(dict.fromkeys(words), key=str.lower)
+        # Remove duplicates while preserving first occurrence order
+        seen = set()
+        unique_words = []
+        for word in words:
+            if word.lower() not in seen:
+                seen.add(word.lower())
+                unique_words.append(word)
 
-        return unique_sorted_words
+        # Sort the unique words case-insensitively
+        return sorted(unique_words, key=str.lower)
 
     except FileNotFoundError:
         raise FileNotFoundError(f"Input file not found: {input_file_path}")
