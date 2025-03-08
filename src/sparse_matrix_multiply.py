@@ -20,37 +20,30 @@ def sparse_matrix_multiply(matrix1, matrix2):
     if not matrix1 or not matrix2:
         return {}
     
-    # Precompute indices and columns for efficient multiplication
-    matrix2_indices = {}
-    for row_idx, row_dict in matrix2.items():
-        for col_idx, val in row_dict.items():
-            if row_idx not in matrix2_indices:
-                matrix2_indices[row_idx] = {}
-            matrix2_indices[row_idx][col_idx] = val
-    
     # Perform multiplication
     result = {}
     for row_idx, row_dict in matrix1.items():
-        # Use a more precise matching of indices
         row_result = {}
         
-        # Iterate through non-zero elements in matrix1 row
+        # Go through each non-zero element in the row
         for mid_idx, val1 in row_dict.items():
-            # Check if mid_idx is a valid row in matrix2
-            if mid_idx in matrix2_indices:
-                # Compute dot product with columns
-                for col_idx, val2 in matrix2_indices[mid_idx].items():
+            # Check if this index exists in matrix2
+            if mid_idx in matrix2:
+                # Go through columns in the corresponding row of matrix2
+                for col_idx, val2 in matrix2[mid_idx].items():
+                    # Compute precise product
                     prod = val1 * val2
-                    # Use precise index matching and accumulation
+                    
+                    # Accumulate results with precise indexing
                     if col_idx not in row_result:
                         row_result[col_idx] = prod
                     else:
                         row_result[col_idx] += prod
         
-        # Prune zero-valued results precisely
+        # Prune zero results
         row_result = {k: v for k, v in row_result.items() if v != 0}
         
-        # Add only non-empty results
+        # Add non-empty rows to result
         if row_result:
             result[row_idx] = row_result
     
