@@ -4,7 +4,7 @@ from src.unique_chars_counter import count_unique_characters
 def test_count_unique_characters():
     # Test various scenarios
     assert count_unique_characters("hello") == 4  # h, e, l, o
-    assert count_unique_characters("Hello") == 5  # H, e, l, o
+    assert count_unique_characters("Hello") == 4  # H, e, l, o
     assert count_unique_characters("") == 0  # Empty string
     assert count_unique_characters("   ") == 1  # Whitespace
     assert count_unique_characters("aAaA") == 2  # Case-sensitive
