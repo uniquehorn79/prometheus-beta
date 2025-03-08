@@ -43,5 +43,5 @@ def test_type_errors():
 
 def test_unicode_characters():
     """Test anagram check with unicode characters"""
-    assert is_anagram("café", "ecaf") == True
-    assert is_anagram("résumé", "umerés") == True
+    assert is_anagram("café", "facé") == True
+    assert is_anagram("résumé", "suméré") == True
