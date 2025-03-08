@@ -40,5 +40,5 @@ def test_nested_empty_arrays():
 def test_complex_nested_array():
     """Test processing a more complex nested array"""
     input_array = [[1, [2, 3]], [4, 5], [6]]
-    expected = [6]  # Function doesn't handle further nested arrays
+    expected = [3, 2, 1, 5, 4, 6]  # Fully flatten and reverse
     assert process_multi_array(input_array) == expected
