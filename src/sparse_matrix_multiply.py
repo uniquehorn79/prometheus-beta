@@ -32,7 +32,7 @@ def sparse_matrix_multiply(matrix1, matrix2):
     result = {}
     for row in matrix1:
         # Skip rows with no non-zero elements
-        if row not in matrix1 or not matrix1[row]:
+        if not matrix1[row]:
             continue
         
         result[row] = {}
@@ -46,5 +46,9 @@ def sparse_matrix_multiply(matrix1, matrix2):
             # Only store non-zero values
             if dot_product != 0:
                 result[row][col] = dot_product
+        
+        # Remove rows with no non-zero elements
+        if not result[row]:
+            del result[row]
     
     return result
