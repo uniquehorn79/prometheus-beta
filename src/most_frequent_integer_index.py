@@ -4,8 +4,8 @@ def find_most_frequent_integer_index(nums: List[int]) -> Optional[int]:
     """
     Find the index of the integer with the highest frequency in the list.
     
-    In case of a tie, returns the index of the last occurrence of the 
-    first-occurring most frequent integer.
+    In case of a tie, returns the index of the first occurrence of the 
+    most frequent integer.
     
     Args:
         nums (List[int]): A list of integers to analyze
@@ -25,22 +25,21 @@ def find_most_frequent_integer_index(nums: List[int]) -> Optional[int]:
     if not nums:
         return None
     
-    # Count frequencies and track last occurrence indices
+    # Count frequencies and track first occurrence indices
     frequency = {}
-    last_occurrence = {}
+    first_occurrence = {}
     
     for idx, num in enumerate(nums):
         # Update frequency count
         frequency[num] = frequency.get(num, 0) + 1
         
-        # Update last occurrence index
-        last_occurrence[num] = idx
+        # Track first occurrence index only if not already set
+        if num not in first_occurrence:
+            first_occurrence[num] = idx
     
     # Find the maximum frequency
     max_freq = max(frequency.values())
     
     # Find the index of the first occurrence of the most frequent integer
     most_frequent_nums = [num for num, freq in frequency.items() if freq == max_freq]
-    
-    # Return the last index of first-occurring most frequent number
-    return min(last_occurrence[num] for num in most_frequent_nums)
+    return min(first_occurrence[num] for num in most_frequent_nums)
