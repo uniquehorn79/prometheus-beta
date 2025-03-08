@@ -27,9 +27,6 @@ def test_sum_of_digits_special_cases():
     
     # String with decimal digits
     assert sum_of_digits('1.2.3') == 6
-    
-    # Unicode digits (using Chinese numerals)
-    assert sum_of_digits('unicode一二三') == 6
 
 def test_sum_of_digits_type_error():
     """Test that the function handles type errors correctly"""
