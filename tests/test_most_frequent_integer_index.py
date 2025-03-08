@@ -28,7 +28,7 @@ def test_complex_frequency():
 def test_negative_numbers():
     """Test handling of negative numbers."""
     assert find_most_frequent_integer_index([-1, -1, 2, 2, 3]) == 0
-    assert find_most_frequent_integer_index([1, -1, -1, 2, 2]) == 0
+    assert find_most_frequent_integer_index([1, -1, -1, 2, 2]) == 1
 
 def test_large_input():
     """Test with a larger input to ensure performance."""
