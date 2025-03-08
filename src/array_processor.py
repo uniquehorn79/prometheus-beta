@@ -1,3 +1,21 @@
+def flatten(lst):
+    """
+    Recursively flatten a nested list.
+    
+    Args:
+        lst (list): A potentially nested list
+    
+    Returns:
+        list: A flattened list with all nested elements
+    """
+    result = []
+    for el in lst:
+        if isinstance(el, list):
+            result.extend(flatten(el))
+        else:
+            result.append(el)
+    return result
+
 def process_multi_array(input_array):
     """
     Process a multi-dimensional array with multiple transformations.
@@ -18,11 +36,11 @@ def process_multi_array(input_array):
         >>> process_multi_array([[1, 1], [2, 2], [3, 3]])
         [1, 2, 3]
     """
-    # Remove empty sub-arrays
-    non_empty_arrays = [arr for arr in input_array if arr]
+    # Remove empty sub-arrays and flatten nested lists
+    flattened_arrays = [flatten(arr) for arr in input_array if arr]
     
     # Reverse elements in each sub-array
-    reversed_arrays = [list(reversed(arr)) for arr in non_empty_arrays]
+    reversed_arrays = [list(reversed(arr)) for arr in flattened_arrays]
     
     # Flatten the array
     flattened_array = [item for sublist in reversed_arrays for item in sublist]
@@ -31,8 +49,9 @@ def process_multi_array(input_array):
     seen = set()
     result = []
     for item in flattened_array:
-        if item not in seen:
-            seen.add(item)
+        hashable_item = str(item) if not isinstance(item, (int, str, float, bool)) else item
+        if hashable_item not in seen:
+            seen.add(hashable_item)
             result.append(item)
     
     return result
