@@ -16,9 +16,16 @@ def sum_of_digits(input_string: str) -> int:
         >>> sum_of_digits('no digits')
         0
     """
+    # Use Unicode-aware digit check to support various numeral systems
+    import unicodedata
+    
+    # Validate input is a string
+    if not isinstance(input_string, str):
+        raise TypeError("Input must be a string")
+    
     # Extract all digits from the string, converting each to an integer
-    # Use strip to handle any leading zeros
-    digits = [int(char) for char in input_string if char.isdigit()]
+    # Use unicodedata to catch digits from various scripts
+    digits = [int(char) for char in input_string if unicodedata.category(char) in ['Nd', 'Digit']]
     
     # Return the sum of the digits
     return sum(digits)
