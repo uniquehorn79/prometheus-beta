@@ -20,35 +20,35 @@ def sparse_matrix_multiply(matrix1, matrix2):
     if not matrix1 or not matrix2:
         return {}
     
-    # Compute dimensions and transpose matrix2 for efficient multiplication
-    matrix2_transposed = {}
-    for row, row_dict in matrix2.items():
-        for col, val in row_dict.items():
-            if col not in matrix2_transposed:
-                matrix2_transposed[col] = {}
-            matrix2_transposed[col][row] = val
+    # Precompute common keys to enable efficient dot product calculation
+    matrix2_cols = {}
+    for row_idx, row_dict in matrix2.items():
+        for col_idx, val in row_dict.items():
+            if col_idx not in matrix2_cols:
+                matrix2_cols[col_idx] = {}
+            matrix2_cols[col_idx][row_idx] = val
     
     # Perform multiplication
     result = {}
-    for row in matrix1:
-        # Skip rows with no non-zero elements
-        if not matrix1[row]:
-            continue
+    # Iterate through each row of matrix1
+    for row_idx, row_dict in matrix1.items():
+        # Initialize result row
+        result_row = {}
         
-        result[row] = {}
-        for col in matrix2_transposed:
-            # Compute dot product of row from matrix1 with column from matrix2
+        # Iterate through columns of matrix2
+        for col_idx in matrix2_cols:
+            # Perform dot product
             dot_product = sum(
-                matrix1[row].get(k, 0) * matrix2_transposed[col].get(k, 0)
-                for k in set(matrix1[row]) & set(matrix2_transposed[col])
+                row_dict.get(k, 0) * matrix2_cols[col_idx].get(k, 0)
+                for k in (set(row_dict) & set(matrix2_cols[col_idx]))
             )
             
-            # Only store non-zero values
+            # Store only non-zero results
             if dot_product != 0:
-                result[row][col] = dot_product
+                result_row[col_idx] = dot_product
         
-        # Remove rows with no non-zero elements
-        if not result[row]:
-            del result[row]
+        # Add non-empty rows to result
+        if result_row:
+            result[row_idx] = result_row
     
     return result
