@@ -27,4 +27,4 @@ def count_unique_characters(input_string: str) -> int:
     
     # Use a set to count unique characters
     # This preserves the case-sensitivity requirement
-    return len(set(input_string))
+    return len(set(list(input_string)))
