@@ -20,7 +20,7 @@ def sparse_matrix_multiply(matrix1, matrix2):
     if not matrix1 or not matrix2:
         return {}
     
-    # Precompute common keys to enable efficient dot product calculation
+    # Prepare matrix2 by transposing and tracking columns
     matrix2_cols = {}
     for row_idx, row_dict in matrix2.items():
         for col_idx, val in row_dict.items():
@@ -30,25 +30,24 @@ def sparse_matrix_multiply(matrix1, matrix2):
     
     # Perform multiplication
     result = {}
-    # Iterate through each row of matrix1
     for row_idx, row_dict in matrix1.items():
-        # Initialize result row
-        result_row = {}
+        # Use intermediate dictionary to track output
+        row_result = {}
         
-        # Iterate through columns of matrix2
-        for col_idx in matrix2_cols:
-            # Perform dot product
-            dot_product = sum(
-                row_dict.get(k, 0) * matrix2_cols[col_idx].get(k, 0)
-                for k in (set(row_dict) & set(matrix2_cols[col_idx]))
-            )
+        # Go through each column in matrix2
+        for col_idx, col_dict in matrix2_cols.items():
+            # Compute dot product, but be selective about common indices
+            dot_product = 0
+            for k, v1 in row_dict.items():
+                if k in col_dict:
+                    dot_product += v1 * col_dict[k]
             
-            # Store only non-zero results
+            # Only add non-zero results
             if dot_product != 0:
-                result_row[col_idx] = dot_product
+                row_result[col_idx] = dot_product
         
-        # Add non-empty rows to result
-        if result_row:
-            result[row_idx] = result_row
+        # Only add non-empty rows to result
+        if row_result:
+            result[row_idx] = row_result
     
     return result
