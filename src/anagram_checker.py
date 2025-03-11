@@ -20,31 +20,34 @@ def are_anagrams(str1: str, str2: str) -> bool:
     if not (isinstance(str1, str) and isinstance(str2, str)):
         raise TypeError("Both inputs must be strings")
 
-    # Remove whitespace, convert to lowercase, and normalize Unicode
+    # Remove whitespace, convert to lowercase
+    cleaned_str1 = ''.join(str1.lower().split())
+    cleaned_str2 = ''.join(str2.lower().split())
+
+    # Normalize to remove accents and compare
     import unicodedata
-    cleaned_str1 = ''.join(
-        char.lower() for char in unicodedata.normalize('NFKD', str1) 
-        if not unicodedata.combining(char)
-    ).replace(' ', '')
-    
-    cleaned_str2 = ''.join(
-        char.lower() for char in unicodedata.normalize('NFKD', str2) 
-        if not unicodedata.combining(char)
-    ).replace(' ', '')
+    normalized_str1 = ''.join(
+        char for char in unicodedata.normalize('NFKD', cleaned_str1) 
+        if unicodedata.category(char) != 'Mn'
+    )
+    normalized_str2 = ''.join(
+        char for char in unicodedata.normalize('NFKD', cleaned_str2) 
+        if unicodedata.category(char) != 'Mn'
+    )
 
     # Check if lengths are different
-    if len(cleaned_str1) != len(cleaned_str2):
+    if len(normalized_str1) != len(normalized_str2):
         return False
 
     # Use character counting to check for anagrams
     char_count = {}
 
     # Count characters in first string
-    for char in cleaned_str1:
+    for char in normalized_str1:
         char_count[char] = char_count.get(char, 0) + 1
 
     # Subtract characters from second string
-    for char in cleaned_str2:
+    for char in normalized_str2:
         if char not in char_count:
             return False
         char_count[char] -= 1
