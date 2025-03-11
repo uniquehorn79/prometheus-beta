@@ -11,7 +11,7 @@ def test_basic_path():
     }
     path, distance = dijkstra_shortest_path(graph, 'A', 'D')
     assert path == ['A', 'C', 'B', 'D']
-    assert distance == 4
+    assert distance == 6  # 2 (A to C) + 1 (C to B) + 3 (B to D)
 
 def test_single_node_path():
     """Test path from a node to itself."""
