@@ -33,8 +33,8 @@ def test_repeated_characters():
 
 def test_unicode_characters():
     """Test handling of Unicode characters"""
-    assert are_anagrams("résumé", "sumeer") == False
     assert are_anagrams("café", "face") == True
+    assert are_anagrams("naïve", "vaine") == True
 
 def test_type_errors():
     """Test error handling for invalid input types"""
