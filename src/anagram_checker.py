@@ -20,9 +20,17 @@ def are_anagrams(str1: str, str2: str) -> bool:
     if not (isinstance(str1, str) and isinstance(str2, str)):
         raise TypeError("Both inputs must be strings")
 
-    # Remove whitespace and convert to lowercase
-    cleaned_str1 = ''.join(str1.lower().split())
-    cleaned_str2 = ''.join(str2.lower().split())
+    # Remove whitespace, convert to lowercase, and normalize Unicode
+    import unicodedata
+    cleaned_str1 = ''.join(
+        char.lower() for char in unicodedata.normalize('NFKD', str1) 
+        if not unicodedata.combining(char)
+    ).replace(' ', '')
+    
+    cleaned_str2 = ''.join(
+        char.lower() for char in unicodedata.normalize('NFKD', str2) 
+        if not unicodedata.combining(char)
+    ).replace(' ', '')
 
     # Check if lengths are different
     if len(cleaned_str1) != len(cleaned_str2):
